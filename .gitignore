@@ -1,0 +1,12 @@
+# Local tooling, not part of the site
+.claude/
+
+# CLAUDE.md is the private fact sheet behind the page. It records things that are
+# deliberately NOT public: the GPA and the decision to leave it off, the Tech-sphere
+# Media role that was cut, and the note to re-pull the ClinicFlow numbers.
+# A GitHub Pages repo is world-readable, so this stays out of it.
+CLAUDE.md
+
+# OS noise
+Thumbs.db
+.DS_Store

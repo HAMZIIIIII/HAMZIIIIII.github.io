@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<!--
+  Ahmed Mansour — personal brand page / resume / printable CV
+  Built from CLAUDE.md (§4 is the only source of truth). One file, no build step, no frameworks.
+
+  OPEN TODOs rendered on the page as yellow <mark class="todo" data-todo> placeholders:
+    None. Every fact on this page traces to CLAUDE.md §4.
+    (Account Manager, Tech-sphere Media — Sep 2023, 6 months — was cut on 23 Nov 2026 rather than
+     carry unconfirmed dates and bullets. The markup for new placeholders still works: wrap text in
+     <mark class="todo" data-todo>…</mark> and the corner badge counts it automatically.)
+
+  DESIGN NOTES
+    - Visual language ported from two React references into vanilla HTML/CSS/SVG:
+      a cinematic dark hero (blur-focus title, scroll hint, scroll progress line) and an
+      "ink" system (hatched page, paper sheet, bracket-corner frames, mono labels,
+      live SVG diagrams). No React, no Tailwind, no CDN JS — §2.5 requires one portable file.
+    - The hero does NOT lock scroll. Pinning the page fights the 30-second test and breaks
+      touch devices. Same look, no scroll-jacking.
+    - The three diagrams animate with SMIL (<animateMotion>) + CSS, so they need no JavaScript
+      and still move with JS disabled.
+
+  BUILD NOTES (not page content):
+    - Photo lives at headshot/ahmed.jpg. Replace that one file to change the photo; no HTML edit needed.
+    - Deployed to GitHub Pages at https://hamziiiiii.github.io (GitHub lowercases the hostname
+      even though the repo is HAMZIIIIII.github.io). og:url, og:image, twitter:image, the canonical
+      link and the JSON-LD all carry that absolute URL. If the domain ever changes, those five
+      places change with it.
+    - "Last updated" in the footer is hand-written. Bump it when the facts change.
+    - Remove the TODO badge by deleting the line marked REMOVE-BADGE in the script at the bottom.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ahmed Mansour — AI Automation &amp; Growth · Cairo</title>
+<meta name="description" content="Cairo-based engineer and operator. I build AI automation, WhatsApp booking systems and lead-gen pipelines for real businesses. Co-founder of OYA.">
+<meta name="author" content="Ahmed Mansour">
+<meta name="theme-color" content="#0B1120">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Ahmed Mansour — AI Automation &amp; Growth · Cairo">
+<meta property="og:description" content="I build the systems that make a business sell: AI automation, funnels, and the operations behind them. Co-founder of OYA.">
+<meta property="og:url" content="https://hamziiiiii.github.io/">
+<meta property="og:image" content="https://hamziiiiii.github.io/headshot/ahmed.jpg">
+<meta property="og:image:width" content="854">
+<meta property="og:image:height" content="1280">
+<meta property="og:image:alt" content="Portrait of Ahmed Mansour">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ahmed Mansour — AI Automation &amp; Growth · Cairo">
+<meta name="twitter:description" content="I build the systems that make a business sell: AI automation, funnels, and the operations behind them. Co-founder of OYA.">
+<meta name="twitter:image" content="https://hamziiiiii.github.io/headshot/ahmed.jpg">
+
+<link rel="canonical" href="https://hamziiiiii.github.io/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F7A4D'/%3E%3Ctext x='32' y='45' font-family='Helvetica,Arial,sans-serif' font-size='38' font-weight='700' fill='%23FAFAF7' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+
+<style>
+/* ============================================================ tokens */
+:root{
+  --page:#EDEDE7;
+  --hatch:rgba(15,23,42,.055);
+  --paper:#FAFAF7;
+  --card-a:#FFFFFF;
+  --card-b:#F4F4EF;
+  --raise:#FFFFFF;
+  --ink:#0F172A;
+  --soft:#2A3448;
+  --muted:#52607A;
+  --faint:#5E6A7D;
+  --line:#E2E2D9;
+  --line-strong:#CDCDC2;
+  --bracket:#BFBFB2;
+  --accent:#1F7A4D;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#E9F2EC;
+  --inv:#0F172A;
+  --inv-ink:#FAFAF7;
+  --todo-bg:#FFEF9E;
+  --todo-ink:#4A3B00;
+  --shadow:0 1px 2px rgba(15,23,42,.05),0 10px 30px -16px rgba(15,23,42,.22);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --maxw:1180px;
+}
+:root{color-scheme:light dark}
+@media (prefers-color-scheme:dark){
+  :root{
+    --page:#070B14;
+    --hatch:rgba(255,255,255,.045);
+    --paper:#0B1120;
+    --card-a:#141C2E;
+    --card-b:#101829;
+    --raise:#17202F;
+    --ink:#E9EEF5;
+    --soft:#C6D0DE;
+    --muted:#9FB0C6;
+    --faint:#8FA0B6;
+    --line:#1E293B;
+    --line-strong:#2C3B55;
+    --bracket:#3A4A66;
+    --accent:#5FD39B;
+    --accent-ink:#06220F;
+    --accent-soft:#122A20;
+    --inv:#E9EEF5;
+    --inv-ink:#0B1120;
+    --todo-bg:#5A4C06;
+    --todo-ink:#FFF4C2;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 12px 34px -16px rgba(0,0,0,.8);
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  background-color:var(--page);
+  background-image:repeating-linear-gradient(135deg,var(--hatch) 0 1px,transparent 1px 10px);
+}
+h1,h2,h3{margin:0;line-height:1.12;font-weight:700;letter-spacing:-0.025em}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
+a:hover{text-decoration-thickness:2.5px}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px}
+@supports not selector(:focus-visible){
+  a:focus,button:focus{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px}
+}
+svg{display:block}
+
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 clamp(16px,3vw,34px)}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+
+/* ====================================================== scroll progress */
+.progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:70;background:transparent;pointer-events:none}
+.progress i{
+  display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:left center;
+  background:var(--accent);
+  background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 45%,transparent));
+}
+
+/* ================================================================= nav */
+.site-head{
+  position:sticky;top:0;z-index:50;
+  background:var(--page);
+  background:color-mix(in srgb,var(--page) 86%,transparent);
+  -webkit-backdrop-filter:saturate(1.5) blur(12px);
+  backdrop-filter:saturate(1.5) blur(12px);
+  border-bottom:1px solid var(--line);
+}
+@supports not (backdrop-filter:blur(2px)){.site-head{background:var(--page)}}
+.nav-inner{display:flex;align-items:center;gap:14px;min-height:62px}
+.brand{
+  display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink);
+  font-weight:700;letter-spacing:-0.02em;font-size:.98rem;white-space:nowrap;
+}
+.brand .glyph{
+  width:24px;height:24px;border-radius:6px;display:grid;place-items:center;flex:0 0 auto;
+  background:var(--accent);color:var(--accent-ink);font-size:.8rem;font-weight:800;
+}
+.nav-links{display:flex;gap:2px;margin-left:auto;align-items:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:.86rem;font-weight:500;
+  padding:8px 10px;border-radius:7px;white-space:nowrap;transition:color .2s,background-color .2s;
+}
+.nav-links a:hover{color:var(--ink);background:var(--accent-soft)}
+.langs{display:flex;gap:2px;align-items:center;margin-left:6px;padding-left:10px;border-left:1px solid var(--line);flex:0 0 auto}
+.lang-btn{
+  font:inherit;font-family:var(--mono);font-size:.76rem;font-weight:500;cursor:pointer;
+  background:none;border:0;color:var(--muted);padding:6px 8px;border-radius:6px;transition:color .2s,background-color .2s;
+}
+.lang-btn[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft)}
+
+/* =============================================================== hero */
+.hero{
+  position:relative;overflow:hidden;
+  background:#070B14;
+  color:#EEF2F8;
+  border-bottom:1px solid #1B2436;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(900px 420px at 72% 18%, rgba(31,122,77,.30), transparent 68%),
+    radial-gradient(700px 500px at 12% 95%, rgba(31,122,77,.13), transparent 70%);
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(760px 420px at 50% 30%,#000,transparent 78%);
+  -webkit-mask-image:radial-gradient(760px 420px at 50% 30%,#000,transparent 78%);
+}
+.hero-inner{position:relative;z-index:1;padding:clamp(40px,7vw,86px) 0 clamp(54px,7vw,76px)}
+.hero-grid{display:grid;gap:clamp(26px,4vw,52px);grid-template-columns:1fr;align-items:center}
+@media (min-width:920px){.hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)}}
+
+.kicker{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(238,242,248,.62);
+}
+.kicker .rule{width:28px;height:1px;background:rgba(238,242,248,.35)}
+
+.hero h1{
+  font-size:clamp(1.9rem,5.6vw,3.5rem);
+  font-weight:800;letter-spacing:-0.035em;line-height:1.06;
+  margin:16px 0 0;max-width:17ch;color:#F6F8FC;
+}
+.hero h1 .dim{color:rgba(238,242,248,.60)}
+.hero .sub{margin-top:20px;color:rgba(216,224,236,.78);font-size:1.02rem;max-width:52ch}
+
+.status{
+  display:inline-flex;align-items:center;gap:9px;margin-top:24px;
+  padding:7px 13px 7px 11px;border-radius:999px;
+  border:1px solid rgba(95,211,155,.3);background:rgba(31,122,77,.16);
+  font-family:var(--mono);font-size:.77rem;letter-spacing:.05em;color:#A9E9C8;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#5FD39B;flex:0 0 auto}
+.js .dot{animation:pulse 2.1s ease-in-out infinite}
+
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  font:inherit;font-weight:600;font-size:.97rem;
+  padding:13px 22px;border-radius:10px;text-decoration:none;border:1.5px solid transparent;
+  transition:transform .2s cubic-bezier(.2,.8,.2,1),filter .2s,border-color .2s,color .2s;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn-primary:hover{filter:brightness(1.1)}
+.hero .btn-ghost{background:transparent;color:#EEF2F8;border-color:rgba(238,242,248,.26)}
+.hero .btn-ghost:hover{border-color:#5FD39B;color:#A9E9C8}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* portrait */
+.shot{position:relative;justify-self:center;width:min(280px,72vw)}
+.shot img{
+  width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 14%;
+  border:1px solid rgba(238,242,248,.14);
+  filter:grayscale(1) contrast(1.06);
+  transform-origin:center;will-change:transform;
+}
+.shot figcaption{
+  position:absolute;left:0;bottom:-1px;
+  padding:6px 11px;background:#070B14;border:1px solid rgba(238,242,248,.14);border-left:0;border-bottom:0;
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;color:rgba(216,224,236,.8);
+}
+.shot .c{position:absolute;width:13px;height:13px;border:0 solid rgba(95,211,155,.75);pointer-events:none}
+.shot .tl{top:-7px;left:-7px;border-top-width:1.5px;border-left-width:1.5px}
+.shot .tr{top:-7px;right:-7px;border-top-width:1.5px;border-right-width:1.5px}
+.shot .bl{bottom:-7px;left:-7px;border-bottom-width:1.5px;border-left-width:1.5px}
+.shot .br{bottom:-7px;right:-7px;border-bottom-width:1.5px;border-right-width:1.5px}
+
+/* phone / tablet hero: face first, tighter type, CTAs share a row */
+@media (max-width:919px){
+  .hero-inner{padding:30px 0 42px}
+  .hero-grid{gap:22px}
+  .shot{order:-1;justify-self:start;width:min(152px,44vw)}
+  .shot figcaption{font-size:.58rem;padding:5px 9px;letter-spacing:.16em}
+  .hero h1{font-size:clamp(1.7rem,6.6vw,2.5rem);max-width:21ch;margin-top:14px}
+  .hero .sub{margin-top:16px;font-size:.97rem}
+  .status{margin-top:18px}
+  .cta-row{margin-top:22px;gap:10px}
+  .hero .btn{flex:1 1 148px;justify-content:center;padding:12px 16px;font-size:.93rem}
+}
+@media (max-width:759px){
+  .bname{display:none}
+  .nav-links{
+    margin-left:0;
+    mask-image:linear-gradient(90deg,#000 86%,transparent);
+    -webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);
+  }
+  .nav-links a{font-size:.83rem;padding:8px 9px}
+  .langs{margin-left:auto}
+}
+@media (max-width:430px){
+  .hero .btn{white-space:nowrap}
+  .pdf{display:none}
+}
+
+.hint{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding-bottom:22px;
+  font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.26em;
+  color:rgba(238,242,248,.68);transition:opacity .45s ease;
+}
+.js .hint svg{animation:bounce 1.7s ease-in-out infinite}
+
+/* ============================================================== sheet */
+.sheet{
+  position:relative;width:100%;max-width:var(--maxw);margin:0 auto;
+  background:var(--paper);border-left:1px solid var(--line);border-right:1px solid var(--line);
+}
+.section{padding:clamp(46px,6.5vw,86px) clamp(16px,3vw,52px);border-top:1px solid var(--line)}
+.section:first-child{border-top:0}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:14px;
+}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--line-strong)}
+.h2{font-size:clamp(1.55rem,3.6vw,2.35rem);font-weight:700;letter-spacing:-0.03em}
+.h2 .dim{color:var(--faint)}
+.lede{color:var(--muted);max-width:60ch;margin-top:12px;font-size:1.01rem}
+
+/* ====================================================== bracket frames */
+.frame{position:relative}
+.frame::before,.frame::after,.card::before,.card::after{
+  content:"";position:absolute;width:12px;height:12px;border:0 solid var(--bracket);
+  pointer-events:none;transition:border-color .3s,transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.frame::before{top:-6px;left:-6px;border-top-width:1.5px;border-left-width:1.5px}
+.frame::after{bottom:-6px;right:-6px;border-bottom-width:1.5px;border-right-width:1.5px}
+.card::before{top:-6px;right:-6px;border-top-width:1.5px;border-right-width:1.5px}
+.card::after{bottom:-6px;left:-6px;border-bottom-width:1.5px;border-left-width:1.5px}
+.frame:hover::before{transform:translate(-3px,-3px)}
+.frame:hover::after{transform:translate(3px,3px)}
+.frame:hover .card::before{transform:translate(3px,-3px)}
+.frame:hover .card::after{transform:translate(-3px,3px)}
+.frame:hover::before,.frame:hover::after,.frame:hover .card::before,.frame:hover .card::after{border-color:var(--accent)}
+
+.card{
+  position:relative;height:100%;
+  background:linear-gradient(180deg,var(--card-a),var(--card-b));
+  border:1px solid var(--line);padding:clamp(18px,2.2vw,24px);
+  display:flex;flex-direction:column;gap:11px;
+  transition:border-color .3s,box-shadow .35s;
+}
+.card:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
+.card h3{font-size:1.04rem;font-weight:650;letter-spacing:-0.012em}
+.card p{color:var(--muted);font-size:.95rem}
+
+/* ======================================================= 30 seconds */
+.grid3{display:grid;gap:clamp(18px,2.4vw,26px);grid-template-columns:minmax(0,1fr);margin-top:30px}
+@media (min-width:780px){.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.quick .idx{font-family:var(--mono);font-size:.75rem;letter-spacing:.16em;color:var(--faint)}
+.quick h3{font-size:1.06rem}
+
+/* ============================================================== asks */
+.ask .num{
+  width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:var(--accent-soft);color:var(--accent);
+  font-family:var(--mono);font-size:.82rem;font-weight:500;
+}
+.ask .who{
+  margin-top:auto;padding-top:12px;border-top:1px solid var(--line);
+  color:var(--soft);font-size:.91rem;
+}
+.ask .who b{font-family:var(--mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:500;display:block;margin-bottom:3px}
+.note{
+  display:flex;gap:12px;align-items:flex-start;margin-top:26px;
+  color:var(--muted);font-size:.93rem;max-width:64ch;
+  border-left:2px solid var(--accent);padding:3px 0 3px 14px;
+}
+
+/* ========================================================== featured */
+.bento{display:grid;gap:clamp(22px,3vw,34px);grid-template-columns:minmax(0,1fr);margin-top:30px}
+@media (min-width:900px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.bento .wide{grid-column:1/-1}}
+.case .card{padding:0;gap:0;min-width:0}
+.case-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  padding:clamp(16px,2vw,22px) clamp(18px,2.2vw,24px) 0;
+}
+.case-head h3{font-size:1.2rem;letter-spacing:-0.025em}
+.tag{
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-soft);
+  border:1px solid var(--line-strong);
+  border-color:color-mix(in srgb,var(--accent) 24%,transparent);
+  padding:4px 9px;border-radius:999px;
+}
+.stage{
+  position:relative;margin:16px 0 0;padding:4px 0;min-width:0;
+  background:
+    radial-gradient(520px 200px at 50% 55%, color-mix(in srgb,var(--raise) 85%,transparent), transparent 72%);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.stage svg{width:100%;height:auto}
+/* On a phone the diagrams would shrink their labels to ~4px, so they stay at a
+   legible size and the stage scrolls sideways instead. */
+@media (max-width:760px){
+  .stage{overflow-x:auto;overscroll-behavior-x:contain;
+    mask-image:linear-gradient(90deg,#000 92%,transparent);
+    -webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);
+  }
+  .stage svg{min-width:460px}
+  .case.wide .stage svg{min-width:676px}
+}
+.case-body{padding:clamp(16px,2vw,22px) clamp(18px,2.2vw,24px) clamp(18px,2.2vw,24px)}
+.rows{display:grid;gap:14px}
+@media (min-width:820px){.case .wide-rows{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}}
+.row dt{
+  font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:5px;
+}
+.row dd{margin:0;font-size:.96rem;color:var(--soft)}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.stat{
+  position:relative;background:var(--raise);border:1px solid var(--line);
+  padding:14px 12px;text-align:center;
+}
+.stat .v{
+  display:block;font-size:clamp(1.5rem,3.6vw,2.1rem);font-weight:800;letter-spacing:-0.04em;
+  color:var(--accent);font-variant-numeric:tabular-nums;
+}
+.stat .l{display:block;font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;color:var(--muted);margin-top:4px;line-height:1.4}
+.stat-note{margin-top:11px;font-family:var(--mono);font-size:.73rem;color:var(--faint)}
+
+/* diagram shared bits */
+.flow{fill:none;stroke:var(--line-strong);stroke-width:1.2}
+.flow-dash{stroke-dasharray:3 4}
+.js .flow-dash{animation:dash 1.3s linear infinite}
+.pkt{fill:var(--accent)}
+.node{fill:var(--raise);stroke:var(--line-strong)}
+.node-hub{fill:var(--raise);stroke:var(--accent)}
+.d-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;fill:var(--muted)}
+.d-faint{font-family:var(--mono);font-size:8.4px;letter-spacing:.1em;fill:var(--faint)}
+.d-ink{fill:var(--ink)}
+.d-stroke{stroke:var(--ink)}
+.glyph-s{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+
+/* ======================================================== experience */
+.roles{margin-top:30px}
+.role{
+  display:grid;grid-template-columns:1fr;gap:6px;
+  padding:24px 0;border-top:1px solid var(--line);
+}
+.role:first-child{border-top:0;padding-top:6px}
+@media (min-width:860px){.role{grid-template-columns:168px 1fr;gap:34px}}
+.role .when{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:var(--faint);padding-top:5px}
+.role h3{font-size:1.07rem}
+.role .org{color:var(--muted);font-size:.93rem;margin:3px 0 11px}
+.role ul{display:grid;gap:8px}
+.role li{position:relative;padding-left:19px;font-size:.96rem;color:var(--soft)}
+.role li::before{content:"";position:absolute;left:2px;top:10px;width:6px;height:1.5px;background:var(--accent)}
+
+/* ============================================================ skills */
+.skills{display:grid;gap:22px;margin-top:30px}
+@media (min-width:780px){.skills{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}}
+.skill h3{
+  font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:11px;
+}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tags li{
+  font-size:.87rem;color:var(--soft);background:var(--raise);
+  border:1px solid var(--line);padding:6px 12px;border-radius:999px;
+  transition:border-color .25s,color .25s;
+}
+.tags li:hover{border-color:var(--accent);color:var(--ink)}
+
+/* ========================================================= education */
+.edu{display:grid;gap:26px;margin-top:30px}
+@media (min-width:860px){.edu{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}}
+.edu h3{
+  font-family:var(--mono);font-size:.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:14px;
+}
+.edu-item{padding:15px 0;border-top:1px solid var(--line)}
+.edu-item:first-of-type{border-top:0;padding-top:0}
+.edu-item b{display:block;font-size:1rem;font-weight:650}
+.edu-item span{color:var(--muted);font-size:.93rem}
+
+/* ============================================================= story */
+.story-p{max-width:66ch;margin-top:18px;font-size:1.07rem;color:var(--soft)}
+.how{
+  margin-top:24px;font-weight:650;font-size:1.05rem;max-width:58ch;
+  border-left:2px solid var(--accent);padding:3px 0 3px 14px;
+}
+
+/* =========================================================== contact */
+.contacts{display:grid;gap:12px;margin-top:28px}
+@media (min-width:760px){.contacts{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+.contacts li{
+  display:flex;flex-wrap:wrap;gap:3px 14px;align-items:baseline;
+  background:var(--raise);border:1px solid var(--line);padding:14px 18px;
+  transition:border-color .25s;
+}
+.contacts li:hover{border-color:var(--line-strong)}
+.contacts .k{font-family:var(--mono);font-size:.76rem;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);min-width:86px}
+.contacts .v{font-size:.96rem;word-break:break-word}
+
+footer{padding:28px clamp(16px,3vw,52px) 48px;border-top:1px solid var(--line);color:var(--faint)}
+.foot-inner{
+  display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:space-between;
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;
+}
+
+/* ============================================================== todo */
+mark.todo{background:var(--todo-bg);color:var(--todo-ink);padding:1px 6px;border-radius:5px;font-size:.92em}
+.todo-badge{
+  position:fixed;right:14px;bottom:14px;z-index:60;
+  background:var(--todo-bg);color:var(--todo-ink);border:1px solid rgba(0,0,0,.14);
+  border-radius:999px;padding:9px 15px;
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;
+  box-shadow:0 6px 18px rgba(15,23,42,.18);
+}
+
+/* ============================================================ motion */
+.js .reveal{opacity:0;transform:translateY(16px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+@keyframes dash{to{stroke-dashoffset:-14}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(5px);opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none}
+  .js .reveal.in{transition:none}
+  .js .flow-dash,.js .dot,.js .hint svg{animation:none}
+}
+
+/* ============================================================== rtl */
+[dir="rtl"]{text-align:right;letter-spacing:normal}
+
+/* ================================================== print = the CV */
+.print-only{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+  /* dark mode never prints: force the light tokens back */
+  :root{
+    --page:#FFF;--paper:#FFF;--card-a:#FFF;--card-b:#FFF;--raise:#FFF;
+    --ink:#000;--soft:#1a1a1a;--muted:#333;--faint:#555;
+    --line:#999;--line-strong:#999;--bracket:transparent;
+    --accent:#1F7A4D;--accent-soft:#FFF;--inv:#000;--inv-ink:#FFF;
+    --todo-bg:transparent;--todo-ink:#000;--shadow:none;
+  }
+  html,body{background:#fff !important;color:#000 !important;font-size:10.5pt;line-height:1.4}
+  /* Belt and braces: never let a dark-mode token reach paper. */
+  .tags li,.role li,.row dd,.card p,.story-p,.edu-item b,.case-head h3,.role h3{color:#000 !important}
+  .role .org,.edu-item span,.row dt,.stat .l,.role .when,.skill h3,.edu h3{color:#333 !important}
+  .site-head,.hero,.hint,.progress,#thirty,#help,#what,#story,#contact,
+  .todo-badge,.cta-row,.stage,.stat-note,footer{display:none !important}
+  .print-only{display:block}
+  .sheet{max-width:none;border:0;background:#fff}
+  .section{padding:0 0 7pt;border-top:0}
+  .eyebrow,.lede{display:none}
+  .h2{font-size:12.5pt;color:#1F7A4D;margin:0 0 4pt;border-bottom:.6pt solid #999;padding-bottom:2pt;letter-spacing:-0.01em}
+  .h2 .dim{color:#1F7A4D}
+  .js .reveal{opacity:1 !important;transform:none !important}
+  .frame::before,.frame::after,.card::before,.card::after{display:none}
+  a{color:#000;text-decoration:none}
+  main a[href^="http"]::after{content:" (" attr(href) ")";font-size:8.5pt;color:#444;word-break:break-all}
+  main a[href^="mailto"]::after,.print-head a::after{content:"" !important}
+
+  .print-head{margin:0 0 10pt}
+  .print-head h1{font-size:19pt;letter-spacing:-0.03em;margin:0}
+  .print-head .pt{font-size:10.5pt;font-weight:600;color:#1F7A4D;margin:2pt 0 4pt}
+  .print-head .pc{font-size:9pt;color:#222;line-height:1.5}
+  .print-head .ps{font-size:10pt;margin-top:6pt}
+
+  .bento{display:block;margin:2pt 0 0}
+  .case{break-inside:avoid}
+  .case .card{border:0;background:none;padding:0 0 5pt;display:block;height:auto}
+  .case-head{padding:0;margin-bottom:3pt;gap:6pt}
+  .case-head h3{font-size:10.5pt}
+  .tag{border:.6pt solid #666;color:#000;background:none;padding:0 4pt;font-size:7.5pt;border-radius:0}
+  .case-body{padding:0}
+  .rows,.case .wide-rows{display:block}
+  .row{display:block}
+  .row dt{display:inline;font-size:7.5pt;color:#555;margin:0}
+  .row dt::after{content:" "}
+  .row dd{display:inline;font-size:9.6pt}
+  .stats{display:flex;gap:10pt;margin-top:4pt}
+  .stat{border:0;padding:0;text-align:left;display:flex;gap:4pt;align-items:baseline;background:none}
+  .stat .v{font-size:11pt;color:#1F7A4D}
+  .stat .l{font-size:8.5pt;color:#333;margin:0;letter-spacing:0}
+
+  .roles{margin-top:2pt}
+  .role{break-inside:avoid;padding:4pt 0;grid-template-columns:96pt 1fr;gap:10pt;border-top:.4pt solid #ccc;display:grid}
+  .role:first-child{border-top:0}
+  .role .when{font-size:8.8pt;color:#333;padding:0}
+  .role h3{font-size:10.3pt}
+  .role .org{font-size:9pt;margin:0 0 3pt}
+  .role li{font-size:9.6pt;padding-left:9pt}
+  .role li::before{background:#444;top:6pt;left:0;width:5pt}
+
+  .skills{grid-template-columns:1fr;gap:3pt;margin-top:2pt;display:grid}
+  .skill{break-inside:avoid}
+  .skill h3{font-size:9pt;margin:0;display:inline;letter-spacing:.06em}
+  .skill h3::after{content:": "}
+  .tags{display:inline}
+  .tags li{display:inline;border:0;background:none;padding:0;font-size:9.4pt;border-radius:0}
+  .tags li::after{content:" · "}
+  .tags li:last-child::after{content:""}
+
+  .edu{grid-template-columns:1fr 1fr;gap:12pt;margin-top:2pt;display:grid}
+  .edu h3{font-size:9pt;margin-bottom:2pt}
+  .edu-item{padding:2pt 0;border-top:0;break-inside:avoid}
+  .edu-item b{font-size:9.8pt}
+  .edu-item span{font-size:9pt;color:#333}
+
+  mark.todo{background:none;color:#000;font-style:italic;padding:0}
+  mark.todo::before{content:"["}
+  mark.todo::after{content:"]"}
+}
+</style>
+<script>document.documentElement.className+=" js";</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
+<header class="site-head">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top"><span class="glyph" aria-hidden="true">A</span><span class="bname">Ahmed&nbsp;Mansour</span></a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#help">How you can help</a>
+      <a href="#what">What I do</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language">
+      <button class="lang-btn" type="button" id="btn-en" aria-pressed="true">EN</button>
+      <button class="lang-btn" type="button" id="btn-ar" aria-pressed="false" lang="ar">عربي</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- print-only CV header -->
+  <div class="print-head print-only">
+    <h1>Ahmed Mansour</h1>
+    <p class="pt">AI Automation &amp; Growth · Co-founder, OYA (Own Your Automation)</p>
+    <p class="pc">
+      Cairo, Egypt ·
+      <a href="mailto:ahmedhamdiman2000@gmail.com">ahmedhamdiman2000@gmail.com</a> ·
+      +20 111 113 2291 ·
+      linkedin.com/in/ahmedmansoour
+    </p>
+    <p class="ps">
+      Mechatronics engineer turned operator. Built and sold an agriculture business, ran the commercial side of a
+      fresh-produce export business, and co-founded OYA, whose WhatsApp AI booking product ClinicFlow is live in
+      production with three clients.
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+  <section class="hero" id="top" aria-labelledby="hero-h">
+    <div class="hero-inner">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="kicker"><span class="rule" aria-hidden="true"></span>Ahmed Mansour · Cairo</p>
+          <h1 id="hero-h" data-ar="أبني الأنظمة التي تجعل الشركة تبيع: أتمتة بالذكاء الاصطناعي، ومسارات بيع، والتشغيل الذي يقف خلفها.">I build the systems that make a business sell: <span class="dim">AI automation, funnels, and the operations behind them.</span></h1>
+          <p class="sub" data-ar="القاهرة، مصر · شريك مؤسس في OYA (أتمتة أعمالك) · متاح للعمل عن بُعد وللتعارف المهني">Cairo, Egypt · Co-founder, OYA (Own Your Automation) · Open to remote work and introductions</p>
+          <p class="status"><span class="dot" aria-hidden="true"></span>ClinicFlow · live in production</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="mailto:ahmedhamdiman2000@gmail.com?subject=Intro%3A%20%5Byour%20name%5D%20%E2%86%92%20Ahmed">Send me an intro</a>
+            <button class="btn btn-ghost" type="button" data-print>Download CV<span class="pdf">&nbsp;(PDF)</span></button>
+          </div>
+        </div>
+        <figure class="shot">
+          <span class="c tl" aria-hidden="true"></span><span class="c tr" aria-hidden="true"></span>
+          <span class="c bl" aria-hidden="true"></span><span class="c br" aria-hidden="true"></span>
+          <img id="shot-img" src="headshot/ahmed.jpg" alt="Ahmed Mansour" width="280" height="350" decoding="async" fetchpriority="high">
+          <figcaption>CAIRO, EG</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="hint" id="hint" aria-hidden="true">
+      <span>SCROLL</span>
+      <svg width="14" height="18" viewBox="0 0 14 18" fill="none"><path d="M7 1 L7 17 M2 12 L7 17 L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <div class="sheet">
+
+    <!-- ═══════════════════════ IN 30 SECONDS ═══════════════════════ -->
+    <section class="section" id="thirty" aria-labelledby="thirty-h">
+      <div class="reveal">
+        <p class="eyebrow">In 30 seconds</p>
+        <h2 class="h2" id="thirty-h">Three businesses in, <span class="dim">one of them sold.</span></h2>
+        <div class="grid3">
+          <div class="frame quick">
+            <div class="card">
+              <span class="idx">01</span>
+              <h3>Built it, then sold it.</h3>
+              <p>Started an agriculture business while studying engineering, ran it 3–4 years, sold it in 2023.</p>
+            </div>
+          </div>
+          <div class="frame quick">
+            <div class="card">
+              <span class="idx">02</span>
+              <h3>Ran a real P&amp;L.</h3>
+              <p>Two years leading the commercial side of a fresh-produce export business, from suppliers to buyers.</p>
+            </div>
+          </div>
+          <div class="frame quick">
+            <div class="card">
+              <span class="idx">03</span>
+              <h3>Now live in production.</h3>
+              <p>Co-founded OYA. ClinicFlow, our WhatsApp AI booking system, runs for three clinics today.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ HOW YOU CAN HELP ═══════════════════════ -->
+    <section class="section" id="help" aria-labelledby="help-h">
+      <div class="reveal">
+        <p class="eyebrow">The ask</p>
+        <h2 class="h2" id="help-h">How you can help</h2>
+        <p class="lede">Three things, and each one takes you a single message. If one of them matches someone you know, that introduction is worth more to me than anything else on this page.</p>
+
+        <div class="grid3">
+          <div class="frame ask">
+            <div class="card">
+              <span class="num" aria-hidden="true">1</span>
+              <h3>Remote roles</h3>
+              <p>Teams hiring for AI automation, growth and business development, or operations — especially remote roles with international companies.</p>
+              <p class="who"><b>Send me</b>a hiring manager or founder who needs someone who can both build the system and sell the outcome.</p>
+            </div>
+          </div>
+          <div class="frame ask">
+            <div class="card">
+              <span class="num" aria-hidden="true">2</span>
+              <h3>Freelance build &amp; consult work</h3>
+              <p>Businesses that need an n8n automation, a WhatsApp booking or sales bot, or a lead-generation and outreach pipeline built end to end.</p>
+              <p class="who"><b>Send me</b>an owner who keeps saying "we should automate this" and hasn't found anyone to actually do it.</p>
+            </div>
+          </div>
+          <div class="frame ask">
+            <div class="card">
+              <span class="num" aria-hidden="true">3</span>
+              <h3>Clinics &amp; doctors</h3>
+              <p>Clinic owners and doctors with busy practices who are drowning in WhatsApp bookings. That is exactly what ClinicFlow handles.</p>
+              <p class="who"><b>Send me</b>a clinic where the front desk is answering the same WhatsApp questions all day.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="note">Available for remote work now. Mandatory military service runs until September 2027 — it's light, and I'm mostly available.</p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:ahmedhamdiman2000@gmail.com?subject=Intro%3A%20%5Byour%20name%5D%20%E2%86%92%20Ahmed">Send me an intro</a>
+          <a class="btn btn-ghost" href="https://wa.me/201111132291">Message me on WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ WHAT I DO ═══════════════════════ -->
+    <section class="section" id="what" aria-labelledby="what-h">
+      <div class="reveal">
+        <p class="eyebrow">What I do</p>
+        <h2 class="h2" id="what-h">Three things, <span class="dim">and they stack.</span></h2>
+        <div class="grid3">
+          <div class="frame">
+            <div class="card">
+              <h3>AI automation that ships</h3>
+              <p>n8n, the WhatsApp Business API, LLM agents, Supabase. Systems that run in production for paying clients, not prototypes that demo well.</p>
+            </div>
+          </div>
+          <div class="frame">
+            <div class="card">
+              <h3>Sales &amp; growth engineering</h3>
+              <p>Lead generation, cold outreach, funnels, CRM, sales assets, and closing. I build the pipeline and then I work it.</p>
+            </div>
+          </div>
+          <div class="frame">
+            <div class="card">
+              <h3>Operator experience</h3>
+              <p>I've run businesses that carried their own P&amp;L — agriculture, then fresh-produce export. Suppliers, buyers, logistics, quality, and the awkward phone calls.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ FEATURED WORK ═══════════════════════ -->
+    <section class="section" id="work" aria-labelledby="work-h">
+      <div class="reveal">
+        <p class="eyebrow">Featured work</p>
+        <h2 class="h2" id="work-h">Three systems <span class="dim">I built and ran</span></h2>
+
+        <div class="bento">
+
+          <!-- ───────── ClinicFlow ───────── -->
+          <article class="frame case wide">
+            <div class="card">
+              <div class="case-head">
+                <h3>ClinicFlow</h3>
+                <span class="tag">OYA · live in production</span>
+              </div>
+
+              <div class="stage">
+                <svg viewBox="0 0 676 170" role="img" aria-label="Patient messages arrive on WhatsApp, the ClinicFlow agent handles them, and bookings and reminders come out the other side.">
+                  <!-- patients -->
+                  <g>
+                    <text class="d-faint" x="24" y="24">PATIENTS · WHATSAPP</text>
+                    <g class="d-ink">
+                      <rect x="24" y="36" width="92" height="26" rx="5" class="node"/>
+                      <rect x="34" y="45" width="50" height="3" rx="1.5" opacity=".55"/>
+                      <rect x="34" y="52" width="34" height="3" rx="1.5" opacity=".3"/>
+                      <rect x="24" y="72" width="92" height="26" rx="5" class="node"/>
+                      <rect x="34" y="81" width="62" height="3" rx="1.5" opacity=".55"/>
+                      <rect x="34" y="88" width="40" height="3" rx="1.5" opacity=".3"/>
+                      <rect x="24" y="108" width="92" height="26" rx="5" class="node"/>
+                      <rect x="34" y="117" width="44" height="3" rx="1.5" opacity=".55"/>
+                      <rect x="34" y="124" width="56" height="3" rx="1.5" opacity=".3"/>
+                    </g>
+                  </g>
+
+                  <!-- in -->
+                  <path id="cf-a" class="flow" d="M116,49 C176,49 196,74 248,80"/>
+                  <path id="cf-b" class="flow flow-dash" d="M116,85 C180,85 196,85 248,85"/>
+                  <path id="cf-c" class="flow" d="M116,121 C176,121 196,96 248,90"/>
+
+                  <!-- hub -->
+                  <g transform="translate(248,62)">
+                    <rect x="-5" y="-5" width="146" height="56" rx="9" fill="none" stroke="var(--accent)" opacity=".25"/>
+                    <rect width="136" height="46" rx="7" class="node-hub"/>
+                    <g transform="translate(14,13)" class="glyph-s">
+                      <path d="M0 10 L0 2 A2 2 0 0 1 2 0 L14 0 A2 2 0 0 1 16 2 L16 11 A2 2 0 0 1 14 13 L5 13 L0 17 Z"/>
+                      <path d="M5 6.5 h6"/>
+                    </g>
+                    <text class="d-label" x="42" y="21" style="letter-spacing:.16em;font-weight:500">CLINICFLOW</text>
+                    <text class="d-faint" x="42" y="33">AI AGENT · 24/7</text>
+                  </g>
+
+                  <!-- out -->
+                  <path id="cf-d" class="flow" d="M384,76 C424,76 430,56 468,56"/>
+                  <path id="cf-e" class="flow flow-dash" d="M384,94 C424,94 430,114 468,114"/>
+
+                  <!-- outputs -->
+                  <g>
+                    <g transform="translate(468,36)">
+                      <rect width="148" height="42" rx="5" class="node"/>
+                      <circle cx="19" cy="21" r="8.5" fill="var(--accent)" opacity=".16"/>
+                      <path d="M15 21 l3 3 l6 -6" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                      <text class="d-label" x="36" y="18">BOOKING CONFIRMED</text>
+                      <text class="d-faint" x="36" y="29">slot held · patient notified</text>
+                    </g>
+                    <g transform="translate(468,94)">
+                      <rect width="148" height="42" rx="5" class="node"/>
+                      <circle cx="19" cy="21" r="8.5" fill="var(--accent)" opacity=".16"/>
+                      <g transform="translate(13,15)" class="glyph-s" style="stroke:var(--accent)">
+                        <circle cx="6" cy="6" r="5.4"/>
+                        <path d="M6 3.2 V6 l2 1.6"/>
+                      </g>
+                      <text class="d-label" x="36" y="18">REMINDER SENT</text>
+                      <text class="d-faint" x="36" y="29">before the appointment</text>
+                    </g>
+                  </g>
+
+                  <!-- packets -->
+                  <circle class="pkt" r="2.3"><animateMotion dur="2.4s" repeatCount="indefinite" path="M116,49 C176,49 196,74 248,80"/></circle>
+                  <circle class="pkt" r="2.3"><animateMotion dur="2.1s" begin=".5s" repeatCount="indefinite" path="M116,85 C180,85 196,85 248,85"/></circle>
+                  <circle class="pkt" r="2.3"><animateMotion dur="2.6s" begin="1s" repeatCount="indefinite" path="M116,121 C176,121 196,96 248,90"/></circle>
+                  <circle class="pkt" r="2.3"><animateMotion dur="2s" begin=".8s" repeatCount="indefinite" path="M384,76 C424,76 430,56 468,56"/></circle>
+                  <circle class="pkt" r="2.3"><animateMotion dur="2.3s" begin="1.4s" repeatCount="indefinite" path="M384,94 C424,94 430,114 468,114"/></circle>
+                </svg>
+              </div>
+
+              <div class="case-body">
+                <dl class="rows wide-rows">
+                  <div class="row"><dt>Problem</dt><dd>Clinics run their bookings through WhatsApp. The front desk answers the same questions all day, messages get missed after hours, and patients don't show up.</dd></div>
+                  <div class="row"><dt>What I built</dt><dd>Co-founded OYA with two technical partners and built ClinicFlow: an AI agent on the official WhatsApp API that books, reschedules and reminds. I own the commercial side — branding, lead generation, outreach, funnels and CRM, and closing. Stack: Next.js, n8n, Supabase/PostgreSQL, OpenAI, Meta WhatsApp Cloud API.</dd></div>
+                  <div class="row"><dt>Result</dt><dd>Live with three clients, including a paying retainer. One month at one clinic:</dd></div>
+                </dl>
+                <div class="stats">
+                  <div class="stat"><span class="v" data-count="55">55</span><span class="l">bookings made by the agent</span></div>
+                  <div class="stat"><span class="v" data-count="1178">1,178</span><span class="l">inbound patient messages handled</span></div>
+                  <div class="stat"><span class="v" data-count="563">563</span><span class="l">automated reminders sent</span></div>
+                </div>
+                <p class="stat-note">One clinic, one month of production data.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- ───────── Alfa Fruits ───────── -->
+          <article class="frame case">
+            <div class="card">
+              <div class="case-head">
+                <h3>Alfa Fruits outreach engine</h3>
+                <span class="tag">Fresh-produce export</span>
+              </div>
+
+              <div class="stage">
+                <svg viewBox="0 0 320 170" role="img" aria-label="An n8n hub collects leads, runs WhatsApp outreach with email fallback, and hands replies to a human.">
+                  <path id="af-1" class="flow" d="M143,70 H112 V40 H78"/>
+                  <path id="af-2" class="flow flow-dash" d="M143,78 H112 V118 H78"/>
+                  <path id="af-3" class="flow" d="M177,70 H208 V40 H242"/>
+                  <path id="af-4" class="flow flow-dash" d="M177,78 H208 V118 H242"/>
+
+                  <g transform="translate(143,57)">
+                    <rect x="-4" y="-4" width="42" height="42" rx="9" fill="none" stroke="var(--accent)" opacity=".25"/>
+                    <rect width="34" height="34" rx="7" class="node-hub"/>
+                    <g transform="translate(9,9)" class="glyph-s">
+                      <circle cx="3" cy="8" r="2.6"/><circle cx="13" cy="3" r="2.6"/><circle cx="13" cy="13" r="2.6"/>
+                      <path d="M5.4 6.6 L10.6 4.1 M5.4 9.4 L10.6 11.9"/>
+                    </g>
+                    <text class="d-faint" x="17" y="48" text-anchor="middle">n8n</text>
+                  </g>
+
+                  <g transform="translate(48,40)">
+                    <rect x="-18" y="-15" width="36" height="30" rx="6" class="node"/>
+                    <g transform="translate(-7,-7)" class="glyph-s"><circle cx="6" cy="6" r="5.2"/><path d="M9.8 9.8 L14 14"/></g>
+                    <text class="d-faint" x="0" y="-21" text-anchor="middle">SERPER.DEV</text>
+                  </g>
+                  <g transform="translate(48,118)">
+                    <rect x="-18" y="-15" width="36" height="30" rx="6" class="node"/>
+                    <g transform="translate(-8,-7)" class="glyph-s"><path d="M0 4 L0 1.5 A1.5 1.5 0 0 1 1.5 0 L14.5 0 A1.5 1.5 0 0 1 16 1.5 L16 12 A1.5 1.5 0 0 1 14.5 13.5 L1.5 13.5 A1.5 1.5 0 0 1 0 12 Z"/><path d="M0.6 1.2 L8 7 L15.4 1.2"/></g>
+                    <text class="d-faint" x="0" y="28" text-anchor="middle">EMAIL FALLBACK</text>
+                  </g>
+                  <g transform="translate(272,40)">
+                    <rect x="-18" y="-15" width="36" height="30" rx="6" class="node"/>
+                    <g transform="translate(-8,-8)" class="glyph-s"><path d="M0 11 L0 2 A2 2 0 0 1 2 0 L14 0 A2 2 0 0 1 16 2 L16 11 A2 2 0 0 1 14 13 L5 13 L0 17 Z"/><path d="M4.6 6.5 h6.8"/></g>
+                    <text class="d-faint" x="0" y="-21" text-anchor="middle">WHATSAPP API</text>
+                  </g>
+                  <g transform="translate(272,118)">
+                    <rect x="-18" y="-15" width="36" height="30" rx="6" class="node"/>
+                    <g transform="translate(-8,-8)" class="glyph-s"><circle cx="8" cy="5" r="4"/><path d="M1 16 c1.6-4.4 4-6.4 7-6.4 s5.4 2 7 6.4"/></g>
+                    <text class="d-faint" x="0" y="28" text-anchor="middle">HUMAN HANDOFF</text>
+                  </g>
+
+                  <circle class="pkt" r="2.2"><animateMotion dur="1.9s" repeatCount="indefinite" path="M143,70 H112 V40 H78"/></circle>
+                  <circle class="pkt" r="2.2"><animateMotion dur="2.2s" begin=".6s" repeatCount="indefinite" path="M143,78 H112 V118 H78"/></circle>
+                  <circle class="pkt" r="2.2"><animateMotion dur="1.7s" begin=".3s" repeatCount="indefinite" path="M177,70 H208 V40 H242"/></circle>
+                  <circle class="pkt" r="2.2"><animateMotion dur="2.4s" begin="1.1s" repeatCount="indefinite" path="M177,78 H208 V118 H242"/></circle>
+                </svg>
+              </div>
+
+              <div class="case-body">
+                <dl class="rows">
+                  <div class="row"><dt>Problem</dt><dd>Finding and reaching procurement managers at Egyptian exporters was manual, slow, and died whenever nobody had time to follow up.</dd></div>
+                  <div class="row"><dt>What I built</dt><dd>An n8n pipeline: automated lead collection through Serper.dev, a multi-step outreach sequence over the official WhatsApp Business API with email fallback, and an AI reply handler.</dd></div>
+                  <div class="row"><dt>Result</dt><dd>Prospecting ran without me. The handler passed a human only the conversations worth having, with a summary of the chat attached. Site: <a href="https://alfa-fruits.com">alfa-fruits.com</a></dd></div>
+                </dl>
+              </div>
+            </div>
+          </article>
+
+          <!-- ───────── Agriculture ───────── -->
+          <article class="frame case">
+            <div class="card">
+              <div class="case-head">
+                <h3>Agriculture business</h3>
+                <span class="tag">Founded 2020 · sold 2023</span>
+              </div>
+
+              <div class="stage">
+                <svg viewBox="0 0 320 170" role="img" aria-label="A timeline from founding in 2020, through running the business, to selling it in 2023.">
+                  <line x1="34" y1="92" x2="286" y2="92" class="flow"/>
+                  <line x1="34" y1="92" x2="286" y2="92" class="flow flow-dash" stroke="var(--accent)" opacity=".5"/>
+
+                  <g>
+                    <circle cx="34" cy="92" r="6" class="node" stroke="var(--accent)"/>
+                    <text class="d-label" x="34" y="74" text-anchor="middle">2020</text>
+                    <text class="d-faint" x="34" y="112" text-anchor="middle">FOUNDED</text>
+                  </g>
+                  <g>
+                    <circle cx="160" cy="92" r="4.5" class="node"/>
+                    <text class="d-faint" x="160" y="74" text-anchor="middle">3–4 YEARS</text>
+                    <text class="d-faint" x="160" y="112" text-anchor="middle">RAN IT</text>
+                  </g>
+                  <g>
+                    <circle cx="286" cy="92" r="9" fill="var(--accent)" opacity=".18"/>
+                    <circle cx="286" cy="92" r="6" class="node" stroke="var(--accent)"/>
+                    <path d="M282.6 92 l2.6 2.6 l5 -5.4" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text class="d-label" x="286" y="74" text-anchor="middle" style="fill:var(--accent)">2023</text>
+                    <text class="d-faint" x="286" y="112" text-anchor="middle" style="fill:var(--accent)">SOLD</text>
+                  </g>
+
+                  <g class="d-faint">
+                    <text x="34" y="142">INFRASTRUCTURE DEVELOPMENT</text>
+                    <text x="34" y="154">FLUID POWER · OPERATIONS · SALES</text>
+                  </g>
+                  <circle class="pkt" r="2.2"><animateMotion dur="3.4s" repeatCount="indefinite" path="M34,92 H286"/></circle>
+                </svg>
+              </div>
+
+              <div class="case-body">
+                <dl class="rows">
+                  <div class="row"><dt>Problem</dt><dd>Starting a business while studying engineering meant building it on student time and student money, in a sector where nothing is automated for you.</dd></div>
+                  <div class="row"><dt>What I built</dt><dd>A business doing infrastructure development and fluid power systems, and I ran its operations and sales myself.</dd></div>
+                  <div class="row"><dt>Result</dt><dd>Ran it for 3–4 years and sold it. It cost me two years of graduation, and I don't regret it.</dd></div>
+                </dl>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ EXPERIENCE ═══════════════════════ -->
+    <section class="section" id="experience" aria-labelledby="exp-h">
+      <div class="reveal">
+        <p class="eyebrow">Experience</p>
+        <h2 class="h2" id="exp-h">Where <span class="dim">I've worked</span></h2>
+
+        <div class="roles">
+          <article class="role">
+            <p class="when">Apr 2026 — Present</p>
+            <div>
+              <h3>Co-founder, Business Development &amp; Growth</h3>
+              <p class="org">OYA (Own Your Automation) · Cairo</p>
+              <ul>
+                <li>Co-founded an AI automation company with two technical partners. Our product, ClinicFlow, is a WhatsApp-based AI booking and management system for clinics.</li>
+                <li>Own the commercial side: branding, lead generation, sales assets, cold outreach, funnels and CRM, and closing.</li>
+                <li>ClinicFlow is live in production with three clients, including a paying retainer. Stack: Next.js, n8n, Supabase/PostgreSQL, OpenAI, Meta WhatsApp Cloud API.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="role">
+            <p class="when">2024 — 2026</p>
+            <div>
+              <h3>Commercial &amp; Digitalization Lead</h3>
+              <p class="org">Alfa Fruits — fresh-produce export (family business) · Egypt</p>
+              <ul>
+                <li>Ran the commercial side and the decisions of a fresh-produce export business, alongside a team handling purchasing, operations and accounting.</li>
+                <li>Designed and built the n8n lead-generation and cold-outreach system: automated lead collection, a multi-step WhatsApp Business API sequence with email fallback, and an AI reply handler that passed live leads to a human with a chat summary.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="role">
+            <p class="when">2020 — 2023</p>
+            <div>
+              <h3>Founder</h3>
+              <p class="org">Agriculture business · Egypt</p>
+              <ul>
+                <li>Started it while studying engineering, ran it for 3–4 years, then sold it.</li>
+                <li>Infrastructure development, fluid power systems, operations and sales.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="role">
+            <p class="when">Jan 2022 — Jun 2022</p>
+            <div>
+              <h3>Mechatronics Engineer</h3>
+              <p class="org">AL-zaharna Factory</p>
+              <ul>
+                <li>Rebuilt the maintenance documentation system from nothing. The factory had no catalogue for any of its CNC machines, so I built one that did the job.</li>
+                <li>Analysed working parts, feeds and couplings across the machines, and calculated deformation and working hours for the critical parts.</li>
+                <li>Redrew the control circuit diagram for each machine.</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="role">
+            <p class="when">2016 — 2019</p>
+            <div>
+              <h3>Project Manager</h3>
+              <p class="org">Arabic Integrated Services</p>
+              <ul>
+                <li>Ran large translation projects end to end: client handling, work breakdown structure, distribution, milestone logging and monitoring, partial deliveries and final delivery.</li>
+                <li>Most of the clients were international, so I was working in international business communication early.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ SKILLS ═══════════════════════ -->
+    <section class="section" id="skills" aria-labelledby="skills-h">
+      <div class="reveal">
+        <p class="eyebrow">Skills</p>
+        <h2 class="h2" id="skills-h">What I <span class="dim">work with</span></h2>
+        <div class="skills">
+          <div class="skill">
+            <h3>Automation &amp; AI</h3>
+            <ul class="tags">
+              <li>n8n</li><li>WhatsApp Business API (Meta Cloud)</li><li>LLM agents (OpenAI)</li>
+              <li>Prompt design</li><li>Supabase / PostgreSQL</li><li>Google Sheets automation</li>
+            </ul>
+          </div>
+          <div class="skill">
+            <h3>Growth &amp; sales</h3>
+            <ul class="tags">
+              <li>Lead generation</li><li>Cold outreach (WhatsApp / email)</li><li>Funnel design</li>
+              <li>CRM setup</li><li>Sales assets</li><li>Closing</li><li>Content, Arabic + English</li>
+            </ul>
+          </div>
+          <div class="skill">
+            <h3>Business operations</h3>
+            <ul class="tags">
+              <li>Fresh-produce export</li><li>Suppliers &amp; buyers</li><li>Cold chain &amp; quality</li>
+              <li>Running a P&amp;L</li><li>Working with founders and family-business teams</li>
+            </ul>
+          </div>
+          <div class="skill">
+            <h3>Engineering foundation</h3>
+            <ul class="tags">
+              <li>Mechatronics</li><li>Embedded C</li><li>CNC maintenance documentation</li><li>Fluid power systems</li>
+            </ul>
+          </div>
+          <div class="skill">
+            <h3>Tools</h3>
+            <ul class="tags">
+              <li>Notion</li><li>Canva</li><li>CapCut</li><li>Meta Business Suite</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ EDUCATION ═══════════════════════ -->
+    <section class="section" id="education" aria-labelledby="edu-h">
+      <div class="reveal">
+        <p class="eyebrow">Education &amp; learning</p>
+        <h2 class="h2" id="edu-h">Degrees <span class="dim">and what I'm studying now</span></h2>
+        <div class="edu">
+          <div>
+            <h3>Education</h3>
+            <div class="edu-item">
+              <b>B.Sc. Mechatronics Engineering</b>
+              <span>Cairo University, Faculty of Engineering · Graduated January 2026<br>Graduation project: an AI sorting machine with a delta robot.</span>
+            </div>
+            <div class="edu-item">
+              <b>MBA — starting February 2027</b>
+              <span>ESLSCA University, hybrid. Focus under consideration: global marketing or digital transformation.</span>
+            </div>
+          </div>
+          <div>
+            <h3>Learning</h3>
+            <div class="edu-item">
+              <b>AWS machine learning &amp; cloud engineering</b>
+              <span>Self-studied. No certificate yet.</span>
+            </div>
+            <div class="edu-item">
+              <b>Embedded &amp; edge systems</b>
+              <span>Embedded C coursework at university. Preparing for ITI's 9-month Embedded &amp; Edge Architectures track; admission exam July 2027.</span>
+            </div>
+            <div class="edu-item">
+              <b>Languages</b>
+              <span>Arabic (native), English (fluent).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ STORY ═══════════════════════ -->
+    <section class="section" id="story" aria-labelledby="story-h">
+      <div class="reveal">
+        <p class="eyebrow">My story</p>
+        <h2 class="h2" id="story-h">The short <span class="dim">version</span></h2>
+        <p class="story-p" data-ar="بدأت أول مشروع لي في الزراعة وأنا ما زلت طالبًا في الهندسة. أدرته من ثلاث إلى أربع سنوات ثم بعته. بعدها انتقلت إلى تصدير الحاصلات الطازجة، وقضيت نحو عامين أدير الجانب التجاري في شركة تصدير عائلية. لهذا السبب تخرجت بعد زملائي بعامين، ولا أندم على ذلك. اليوم شاركت في تأسيس OYA، حيث نبني أنظمة أتمتة بالذكاء الاصطناعي للشركات. منتجنا ClinicFlow يحجز مواعيد المرضى للعيادات عبر واتساب، وهو يعمل فعليًا مع عملاء يدفعون. يهمني شيء واحد: أنظمة تكسب أو توفر مالًا حقيقيًا، لا عروضًا تجريبية.">I started my first business, in agriculture, while I was still studying engineering. I ran it for 3–4 years and sold it. Then I moved into fresh-produce export and spent about two years running the commercial side of a family export business. That's why I graduated two years after my classmates, and I don't regret it. Today I co-founded OYA, where we build AI automation for businesses. Our product, ClinicFlow, books patients for clinics over WhatsApp and is live with paying clients. I care about one thing: systems that make or save real money, not demos.</p>
+        <p class="how">I prefer simple systems that keep running over impressive ones that break.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════ CONTACT ═══════════════════════ -->
+    <section class="section" id="contact" aria-labelledby="contact-h">
+      <div class="reveal">
+        <p class="eyebrow">Contact</p>
+        <h2 class="h2" id="contact-h">Get in <span class="dim">touch</span></h2>
+        <p class="lede">Fastest answer is WhatsApp. For an introduction, email is easier to forward.</p>
+        <ul class="contacts">
+          <li><span class="k">Email</span><span class="v"><a href="mailto:ahmedhamdiman2000@gmail.com">ahmedhamdiman2000@gmail.com</a></span></li>
+          <li><span class="k">OYA</span><span class="v"><a href="mailto:Hello@ownyourautomation.com">Hello@ownyourautomation.com</a></span></li>
+          <li><span class="k">LinkedIn</span><span class="v"><a href="https://www.linkedin.com/in/ahmedmansoour">linkedin.com/in/ahmedmansoour</a></span></li>
+          <li><span class="k">WhatsApp</span><span class="v"><a href="https://wa.me/201111132291">+20 111 113 2291</a></span></li>
+          <li><span class="k">Instagram</span><span class="v"><a href="https://instagram.com/ahmed.buildz">@ahmed.buildz</a></span></li>
+          <li><span class="k">Based in</span><span class="v">Cairo, Egypt · working remotely</span></li>
+        </ul>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:ahmedhamdiman2000@gmail.com?subject=Intro%3A%20%5Byour%20name%5D%20%E2%86%92%20Ahmed">Send me an intro</a>
+          <button class="btn btn-ghost" type="button" data-print>Download CV<span class="pdf">&nbsp;(PDF)</span></button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="foot-inner">
+        <span>AHMED MANSOUR · CAIRO, EGYPT</span>
+        <span>LAST UPDATED: NOVEMBER 2026</span>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Person",
+  "name":"Ahmed Mansour",
+  "jobTitle":"Co-founder, Business Development & Growth",
+  "worksFor":{"@type":"Organization","name":"OYA (Own Your Automation)"},
+  "address":{"@type":"PostalAddress","addressLocality":"Cairo","addressCountry":"EG"},
+  "email":"mailto:ahmedhamdiman2000@gmail.com",
+  "image":"https://hamziiiiii.github.io/headshot/ahmed.jpg",
+  "url":"https://hamziiiiii.github.io/",
+  "alumniOf":{"@type":"CollegeOrUniversity","name":"Cairo University, Faculty of Engineering"},
+  "knowsLanguage":["ar","en"],
+  "sameAs":["https://www.linkedin.com/in/ahmedmansoour","https://instagram.com/ahmed.buildz"]
+}
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Download CV */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-print]"), function(b){
+    b.addEventListener("click", function(){ window.print(); });
+  });
+
+  /* Language toggle: hero headline, hero sub-line, story paragraph */
+  var swaps = Array.prototype.slice.call(document.querySelectorAll("[data-ar]"));
+  swaps.forEach(function(el){ el.setAttribute("data-en-html", el.innerHTML); });
+  var btnEn = document.getElementById("btn-en"), btnAr = document.getElementById("btn-ar");
+  function setLang(lang){
+    var ar = lang === "ar";
+    swaps.forEach(function(el){
+      if (ar){
+        el.textContent = el.getAttribute("data-ar");
+        el.setAttribute("dir","rtl"); el.setAttribute("lang","ar");
+      } else {
+        el.innerHTML = el.getAttribute("data-en-html");
+        el.removeAttribute("dir"); el.removeAttribute("lang");
+      }
+    });
+    btnEn.setAttribute("aria-pressed", String(!ar));
+    btnAr.setAttribute("aria-pressed", String(ar));
+  }
+  btnEn.addEventListener("click", function(){ setLang("en"); });
+  btnAr.addEventListener("click", function(){ setLang("ar"); });
+
+  /* Scroll progress line + hero parallax + scroll hint */
+  var bar = document.getElementById("bar"),
+      hint = document.getElementById("hint"),
+      shot = document.getElementById("shot-img"),
+      ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY || 0,
+          max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (bar) bar.style.transform = "scaleX(" + Math.min(1, y / max) + ")";
+      if (hint) hint.style.opacity = y > 40 ? "0" : "1";
+      if (shot && !reduce){
+        var p = Math.min(1, y / 600);
+        shot.style.transform = "scale(" + (1 + p * 0.05) + ") translateY(" + (p * -10) + "px)";
+      }
+      ticking = false;
+    });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* TODO badge — delete the next block (REMOVE-BADGE) once every placeholder is filled */
+  var todos = document.querySelectorAll("[data-todo]");          /* REMOVE-BADGE */
+  if (todos.length){                                             /* REMOVE-BADGE */
+    var badge = document.createElement("div");                    /* REMOVE-BADGE */
+    badge.className = "todo-badge";                              /* REMOVE-BADGE */
+    badge.textContent = todos.length + (todos.length === 1 ? " ITEM TO CONFIRM" : " ITEMS TO CONFIRM"); /* REMOVE-BADGE */
+    document.body.appendChild(badge);                            /* REMOVE-BADGE */
+  }                                                              /* REMOVE-BADGE */
+
+  /* Count-up on the production numbers */
+  function countUp(el){
+    var target = parseInt(el.getAttribute("data-count"), 10);
+    if (!target || reduce) return;
+    var t0 = 0, dur = 1100;
+    function step(ts){
+      if (!t0) t0 = ts;
+      var k = Math.min(1, (ts - t0) / dur),
+          e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(target * e).toLocaleString("en-US");
+      if (k < 1) requestAnimationFrame(step);
+    }
+    el.textContent = "0";
+    requestAnimationFrame(step);
+  }
+
+  /* Reveal on scroll */
+  var targets = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)){
+    Array.prototype.forEach.call(targets, function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        Array.prototype.forEach.call(e.target.querySelectorAll("[data-count]"), countUp);
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    Array.prototype.forEach.call(targets, function(el){ io.observe(el); });
+  }
+
+  /* SMIL ignores prefers-reduced-motion, so stop the packets outright */
+  if (reduce){
+    Array.prototype.forEach.call(document.querySelectorAll(".stage svg"), function(svg){
+      if (svg.pauseAnimations) svg.pauseAnimations();
+    });
+  }
+
+  /* Deep links: Chrome drops the fragment jump while sections start translated */
+  if (location.hash.length > 1){
+    var target = document.getElementById(location.hash.slice(1));
+    if (target) window.setTimeout(function(){
+      /* A shared deep link should open where it points, with no animation.
+         behavior:"auto" would defer to CSS scroll-behavior (smooth), and
+         "instant" is too new to rely on, so suspend the CSS for one frame. */
+      var root = document.documentElement, prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = "auto";
+      target.scrollIntoView({ block: "start" });
+      root.style.scrollBehavior = prev;
+    }, 120);
+  }
+
+  /* Everything visible before printing, whatever the scroll position */
+  window.addEventListener("beforeprint", function(){
+    Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function(el){ el.classList.add("in"); });
+    Array.prototype.forEach.call(document.querySelectorAll("[data-count]"), function(el){
+      el.textContent = parseInt(el.getAttribute("data-count"), 10).toLocaleString("en-US");
+    });
+  });
+})();
+</script>
+</body>
+</html>
